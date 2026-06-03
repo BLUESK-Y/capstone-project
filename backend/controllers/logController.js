@@ -8,10 +8,12 @@ const createLog = async (req, res, next) => {
     const userId = req.user.id;
     const { challengeId, date, workoutType, duration, calories, steps, notes, mood } = req.body;
 
-    const existing = await Log.findOne({ userId, challengeId: challengeId || null, date });
-    if (existing) {
-      return res.status(400).json({ success: false, message: "Log already exists for this date" });
-    }
+    if (challengeId) {
+  const existing = await Log.findOne({ userId, challengeId, date });
+  if (existing) {
+    return res.status(400).json({ success: false, message: "Log already exists for this challenge today" });
+  }
+}
 
     const now = new Date();
     const time = now.toLocaleTimeString("en-US", {
