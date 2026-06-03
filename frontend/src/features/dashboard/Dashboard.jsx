@@ -12,6 +12,7 @@ import { StreakIcon, dumbellIcon, stepCountIcon, caloriesIcon } from "../../asse
 import Footer from "../../components/footer/footer";
 
 const Dashboard = () => {
+  const [refreshKey, setRefreshKey] = useState(0);
   const [user, setUser] = useState(null);
   const [logs, setLogs] = useState([]);
 
@@ -138,13 +139,13 @@ const Dashboard = () => {
         </div>
 
         <div className="dashboard-grid-bottom">
-          <div className="bottom-left">
-            <RecentSessions onRefresh={fetchLogs} />
-          </div>
-          <div className="bottom-right">
-            <LogForm onLogged={fetchLogs} />
-          </div>
-        </div>
+  <div className="bottom-left">
+    <RecentSessions key={refreshKey} onRefresh={fetchLogs} />
+  </div>
+  <div className="bottom-right">
+    <LogForm onLogged={() => { fetchLogs(); setRefreshKey(k => k + 1); }} />
+  </div>
+</div>
 
         <div className="dashboard-full">
           <JoinedChallenges />
