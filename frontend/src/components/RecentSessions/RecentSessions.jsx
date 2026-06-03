@@ -50,14 +50,17 @@ const RecentSessions = ({ onRefresh }) => {
   const [editError, setEditError] = useState("");
 
   const fetchLogs = async () => {
+    console.log("fetchLogs called");
     try {
       const user = JSON.parse(localStorage.getItem("user"));
+      console.log("user from localStorage:", user);
       if (!user) return;
       const res = await api.get(`/logs?userId=${user.id || user._id}`);
       console.log("RAW RESPONSE:", res.data);
       const sorted = [...(Array.isArray(res.data.data) ? res.data.data : [])]
         .filter((l) => !l.challengeId)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
+      console.log("SORTED LOGS:", sorted);
       setAllLogs(sorted);
     } catch (error) {
       console.error("Error fetching logs:", error);
