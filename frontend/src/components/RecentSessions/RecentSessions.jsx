@@ -54,7 +54,7 @@ const RecentSessions = ({ onRefresh }) => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) return;
       const res = await api.get(`/logs?userId=${user.id || user._id}`);
-      const sorted = [...(Array.isArray(res.data) ? res.data : [])]
+      const sorted = [...(Array.isArray(res.data.data) ? res.data.data : [])]
         .filter((l) => !l.challengeId)
         .sort((a, b) => new Date(b.date) - new Date(a.date));
       setAllLogs(sorted);

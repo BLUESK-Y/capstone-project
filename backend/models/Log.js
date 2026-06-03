@@ -17,6 +17,10 @@ const logSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-logSchema.index({ userId: 1, challengeId: 1, date: 1 }, { unique: true });
+// Only enforce uniqueness when challengeId exists
+logSchema.index(
+  { userId: 1, challengeId: 1, date: 1 },
+  { unique: true, partialFilterExpression: { challengeId: { $exists: true } } }
+);
 
 module.exports = mongoose.model("Log", logSchema);
