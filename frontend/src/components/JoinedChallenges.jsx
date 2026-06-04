@@ -17,10 +17,17 @@ const JoinedChallenges = () => {
         const res = await api.get(`/user-challenges?userId=${userId}`);
         const records = Array.isArray(res.data) ? res.data : [];
 
-        // Only active challenges; challengeId is populated with full challenge data
+        
+        const seen = new Set();
         const active = records
           .filter((r) => r.status === "active" && r.challengeId)
-          .map((r) => r.challengeId);
+          .map((r) => r.challengeId)
+          .filter((c) => {
+            const id = String(c._id || c.id);
+            if (seen.has(id)) return false;
+            seen.add(id);
+            return true;
+          });
 
         setJoinedChallenges(active);
       } catch (error) {
